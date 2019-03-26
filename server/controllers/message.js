@@ -11,28 +11,28 @@ export const createMessage = async (req, res) => {
     body: { to, message, from },
   } = req
 
-  let findSender = await Contact.findOne({
-    where: {
-      phoneNumber: from,
-    },
-  })
+  if (isValidInput(message) && phoneValidation(to) && phoneValidation(from)) {
+    let findSender = await Contact.findOne({
+      where: {
+        phoneNumber: from,
+      },
+    })
 
-  let findReciever = await Contact.findOne({
-    where: {
-      phoneNumber: to,
-    },
-  })
-  if (!findSender) responses.senderNotFound(res)
-  if (!findReciever) responses.receiverNotFound(res)
-  if (findSender && findReciever) {
-    let data = {
-      message: message,
-      message_status: 'sent',
-      receiver: to,
-      sender: from,
-    }
+    let findReciever = await Contact.findOne({
+      where: {
+        phoneNumber: to,
+      },
+    })
+    if (!findSender) responses.senderNotFound(res)
+    if (!findReciever) responses.receiverNotFound(res)
+    if (findSender && findReciever) {
+      let data = {
+        message: message,
+        message_status: 'sent',
+        receiver: to,
+        sender: from,
+      }
 
-    if (isValidInput(message) && phoneValidation(to) && phoneValidation(from)) {
       Message.create(data)
         .then(message => responses.creationSuccess(res, message))
         .catch(error => res.status(400).send(error))
