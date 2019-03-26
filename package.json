@@ -4,8 +4,8 @@
   "description": "App that manages SMS sending and recieving",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js babel-node",
-    "start": "nodemon  ./index.js --exec babel-node",
+    "dev": "nodemon index.js --exec babel-node --",
+    "start": "nodemon  index.js --exec babel-node",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": "https://github.com/daisymacharia/SMS-Management-Application.git",
@@ -15,6 +15,7 @@
     "body-parser": "^1.18.3",
     "dotenv": "^7.0.0",
     "express": "^4.16.4",
+    "morgan": "^1.9.1",
     "pg": "^7.9.0",
     "pg-hstore": "^2.3.2",
     "sequelize": "^5.1.1",
