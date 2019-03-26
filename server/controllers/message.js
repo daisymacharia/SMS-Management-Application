@@ -31,7 +31,6 @@ export const createMessage = async (req, res) => {
       receiver: to,
       sender: from,
     }
-    console.log(data.message)
 
     if (isValidInput(message) && phoneValidation(to) && phoneValidation(from)) {
       Message.create(data)

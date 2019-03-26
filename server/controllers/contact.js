@@ -32,7 +32,7 @@ export const createContact = (req, res) => {
         responses.serverError(res, e)
       })
   } else {
-    responses.wrongInput(res)
+    responses.wrongInput(res, 'Contact data')
   }
 }
 
@@ -50,8 +50,8 @@ export const updateContact = (req, res) => {
         ? responses.contactNotFound(res)
         : Contact.update(
             {
-              firstName: isValidInput(firstName) || existingContact.firstName,
-              lastName: isValidInput(lastName) || existingContact.lastName,
+              firstName: firstName || existingContact.firstName,
+              lastName: lastName || existingContact.lastName,
             },
             {
               where: {

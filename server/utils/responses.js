@@ -37,13 +37,13 @@ export const MessageNotFound = (res, messageId) => {
 }
 
 export const emptyJsonBody = res => {
-  res.status(400).json({ Message: 'The Body should not be empty' })
+  res.status(422).json({ message: 'The Body should not be empty' })
 }
 
 export const senderNotFound = res => {
-  res.status(404).json({ Message: 'The sender number does not exist' })
+  res.status(404).json({ message: 'The sender number does not exist' })
 }
 
 export const receiverNotFound = res => {
-  res.status(404).json({ Message: 'The receiver number does not exist' })
+  res.status(404).json({ message: 'The receiver number does not exist' })
 }

@@ -17,7 +17,6 @@ export const phoneValidation = input => {
     isValidPhoneNumber = /^[\d]+$/.test(input.trim())
 
     isValidlength = input.toString().trim().length === 10
-    console.log(isValidPhoneNumber, isValidlength, 'valid')
   }
   return isValidPhoneNumber && isValidlength
 }
