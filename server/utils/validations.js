@@ -5,16 +5,19 @@ export const isValidInput = input => {
     isNotEmpty =
       input.trim() !== '' && input.trim() !== undefined && input.trim() !== null
 
-    isAlphabetic = /^[a-zA-Z]+$/.test(input.trim())
+    isAlphabetic = /^[a-zA-Z ]*$/.test(input.trim())
   }
   return isNotEmpty && isAlphabetic
 }
 
-export const isnotEmpty = input => {
-  let isNotEmpty = false
+export const phoneValidation = input => {
+  let isValidPhoneNumber = false
+  let isValidlength = false
   if (input) {
-    isNotEmpty =
-      input.trim() !== '' && input.trim() !== undefined && input.trim() !== null
+    isValidPhoneNumber = /^[\d]+$/.test(input.trim())
+
+    isValidlength = input.toString().trim().length === 10
+    console.log(isValidPhoneNumber, isValidlength, 'valid')
   }
-  return isNotEmpty
+  return isValidPhoneNumber && isValidlength
 }

@@ -10,7 +10,7 @@ export const deleteSuccess = (res, deletedData) => {
   res.status(200).json({ message: `${deletedData} has been deleted` })
 }
 
-export const notFound = (res, nonExistentData) => {
+export const contactNotFound = res => {
   res.status(404).json({ message: `Contact doesn't exist` })
 }
 
@@ -18,8 +18,8 @@ export const getSuccess = (res, data) => {
   res.status(200).json({ data: data, message: `succesfully fetched data` })
 }
 
-export const wrongInput = res => {
-  res.status(422).json({ message: `Invalid input` })
+export const wrongInput = (res, data) => {
+  res.status(422).json({ message: `Invalid ${data}` })
 }
 
 export const serverError = (res, err) => {
@@ -38,4 +38,12 @@ export const MessageNotFound = (res, messageId) => {
 
 export const emptyJsonBody = res => {
   res.status(400).json({ Message: 'The Body should not be empty' })
+}
+
+export const senderNotFound = res => {
+  res.status(404).json({ Message: 'The sender number does not exist' })
+}
+
+export const receiverNotFound = res => {
+  res.status(404).json({ Message: 'The receiver number does not exist' })
 }

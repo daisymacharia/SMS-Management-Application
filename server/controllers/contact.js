@@ -1,10 +1,9 @@
-import Sequelize from 'sequelize'
 import { Contact } from '../models'
 import * as responses from '../utils/responses'
 import * as utils from '../utils/validations'
 
 export const createContact = (req, res) => {
-  const { isValidInput, isnotEmpty } = utils
+  const { isValidInput, phoneValidation } = utils
   if (Object.keys(req.body).length === 0) {
     responses.emptyJsonBody(res)
   }
@@ -15,7 +14,7 @@ export const createContact = (req, res) => {
   if (
     isValidInput(firstName) &&
     isValidInput(lastName) &&
-    isnotEmpty(phoneNumber)
+    phoneValidation(phoneNumber)
   ) {
     Contact.findOne({
       where: {
@@ -48,7 +47,7 @@ export const updateContact = (req, res) => {
   })
     .then(contact => {
       !contact
-        ? responses.notFound(res)
+        ? responses.contactNotFound(res)
         : Contact.update(
             {
               firstName: isValidInput(firstName) || existingContact.firstName,
@@ -80,7 +79,7 @@ export const deleteContact = (req, res) => {
   })
     .then(contact => {
       !contact
-        ? responses.notFound(res)
+        ? responses.contactNotFound(res)
         : Contact.destroy({
             where: { phoneNumber: contact.phoneNumber },
           })

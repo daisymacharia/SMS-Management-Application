@@ -17,15 +17,25 @@ export default (sequelize, DataTypes) => {
     },
     {}
   )
+
   Message.associate = models => {
     Message.belongsTo(models.Contact, {
-      foreignKey: 'senderId',
+      foreignKey: {
+        name: 'sender',
+        key: 'phoneNumber',
+      },
       onDelete: 'CASCADE',
+      targetKey: 'phoneNumber',
     })
     Message.belongsTo(models.Contact, {
-      foreignKey: 'receiverId',
+      foreignKey: {
+        name: 'receiver',
+        key: 'phoneNumber',
+      },
       onDelete: 'CASCADE',
+      targetKey: 'phoneNumber',
     })
   }
+
   return Message
 }

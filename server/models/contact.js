@@ -18,8 +18,6 @@ export default (sequelize, DataTypes) => {
     },
     {}
   )
-  Contact.associate = models => {
-    // associations can be defined here
-  }
+
   return Contact
 }
