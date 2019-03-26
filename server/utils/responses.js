@@ -11,7 +11,7 @@ export const deleteSuccess = (res, deletedData) => {
 }
 
 export const notFound = (res, nonExistentData) => {
-  res.status(404).json({ message: `${nonExistentData} doesn't exist` })
+  res.status(404).json({ message: `Contact doesn't exist` })
 }
 
 export const getSuccess = (res, data) => {
@@ -26,8 +26,8 @@ export const serverError = (res, err) => {
   res.status(500).json({ error: err.message })
 }
 
-export const addExistingData = (res, existingData) => {
-  res.status(409).json({ message: `${existingData} already exists` })
+export const addExistingData = res => {
+  res.status(409).json({ message: `contact already exists` })
 }
 
 export const MessageNotFound = (res, messageId) => {

@@ -1,3 +1,3 @@
-import { createContact } from './contact'
+import { createContact, updateContact, deleteContact } from './contact'
 
-export { createContact }
+export { createContact, updateContact, deleteContact }
