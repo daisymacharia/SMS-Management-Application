@@ -1,4 +1,4 @@
-import { Contact } from '../models'
+import { Contact, Message } from '../models'
 import * as responses from '../utils/responses'
 import * as utils from '../utils/validations'
 
@@ -93,4 +93,24 @@ export const deleteContact = (req, res) => {
     .catch(e => {
       responses.serverError(res, e)
     })
+}
+
+export const getMessages = ({ params: { id }, res }) => {
+  Contact.findAll({
+    include: [
+      {
+        association: 'sender',
+      },
+      {
+        association: 'receiver',
+      },
+    ],
+    where: {
+      id: id,
+    },
+  }).then(contact =>
+    contact
+      ? responses.getSuccess(res, contact)
+      : responses.contactNotFound(res)
+  )
 }

@@ -22,17 +22,17 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      receiver: {
-        type: Sequelize.STRING,
+      receiverId: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: 'Contacts', key: 'phoneNumber' },
+        references: { model: 'Contacts', key: 'id', as: 'sentMessages' },
         onUpdate: 'cascade',
         onDelete: 'cascade',
       },
-      sender: {
-        type: Sequelize.STRING,
+      senderId: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: 'Contacts', key: 'phoneNumber' },
+        references: { model: 'Contacts', key: 'id', as: 'receivedMessages' },
         onUpdate: 'cascade',
         onDelete: 'cascade',
       },

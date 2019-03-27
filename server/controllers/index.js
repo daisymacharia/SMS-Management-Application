@@ -1,4 +1,9 @@
-import { createContact, updateContact, deleteContact } from './contact'
+import {
+  createContact,
+  updateContact,
+  deleteContact,
+  getMessages,
+} from './contact'
 import {
   createMessage,
   deleteMessage,
@@ -10,6 +15,7 @@ import {
 export {
   createContact,
   updateContact,
+  getMessages,
   deleteContact,
   createMessage,
   deleteMessage,

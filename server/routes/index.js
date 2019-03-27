@@ -3,6 +3,7 @@ import {
   createContact,
   updateContact,
   deleteContact,
+  getMessages,
   createMessage,
   deleteMessage,
   getSingleMessage,
@@ -17,6 +18,7 @@ router.get('/', (req, res) => {
 })
 
 router.post('/contact', createContact)
+router.get('/contact/messages/:id', getMessages)
 router.put('/contact/:phoneNumber', updateContact)
 router.delete('/contact/:phoneNumber', deleteContact)
 router.post('/message', createMessage)
