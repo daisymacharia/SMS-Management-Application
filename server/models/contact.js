@@ -19,5 +19,16 @@ export default (sequelize, DataTypes) => {
     {}
   )
 
+  Contact.associate = models => {
+    Contact.hasMany(models.Message, {
+      foreignKey: 'senderId',
+      as: 'sender',
+    })
+    Contact.hasMany(models.Message, {
+      foreignKey: 'receiverId',
+      as: 'receiver',
+    })
+  }
+
   return Contact
 }

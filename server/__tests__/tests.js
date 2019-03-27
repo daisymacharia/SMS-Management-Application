@@ -219,7 +219,7 @@ describe('SMS API', () => {
       it('should not send to non existent number', done => {
         const req = {
           message: 'test message',
-          to: '0700000014',
+          to: '0700000080',
           from: '0700000013',
         }
         request(app)
@@ -263,6 +263,22 @@ describe('SMS API', () => {
               return done(err)
             }
             expect(res.body.message).to.equal('succesfully fetched data')
+            done()
+          })
+      })
+    })
+
+    describe('/GET messages belonging to contact', () => {
+      it('gets a contact and their messages', done => {
+        request(app)
+          .get('/api/contact/messages/1')
+          .send()
+          .expect(200)
+          .end((err, res) => {
+            if (err) {
+              return done(err)
+            }
+            expect(res.body.data).to.length(1)
             done()
           })
       })

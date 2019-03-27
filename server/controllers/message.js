@@ -2,7 +2,7 @@ import { Message, Contact } from '../models'
 import * as responses from '../utils/responses'
 import * as utils from '../utils/validations'
 
-export const createMessage = async (req, res) => {
+export const createMessage = async (req, res, next) => {
   const { isValidInput, phoneValidation } = utils
   if (Object.keys(req.body).length === 0) {
     responses.emptyJsonBody(res)
@@ -12,33 +12,40 @@ export const createMessage = async (req, res) => {
   } = req
 
   if (isValidInput(message) && phoneValidation(to) && phoneValidation(from)) {
-    let findSender = await Contact.findOne({
+    Contact.findOne({
       where: {
         phoneNumber: from,
       },
     })
-
-    let findReciever = await Contact.findOne({
-      where: {
-        phoneNumber: to,
-      },
-    })
-    if (!findSender) responses.senderNotFound(res)
-    if (!findReciever) responses.receiverNotFound(res)
-    if (findSender && findReciever) {
-      let data = {
-        message: message,
-        message_status: 'sent',
-        receiver: to,
-        sender: from,
-      }
-
-      Message.create(data)
-        .then(message => responses.creationSuccess(res, message))
-        .catch(error => res.status(400).send(error))
-    } else {
-      responses.wrongInput(res, 'Message data')
-    }
+      .then(contact => {
+        contact
+          ? (req.body.from = contact.dataValues.id)
+          : responses.senderNotFound(res)
+      })
+      .then(() =>
+        Contact.findOne({
+          where: {
+            phoneNumber: to,
+          },
+        })
+      )
+      .then(contact => {
+        contact
+          ? (req.body.to = contact.dataValues.id)
+          : responses.receiverNotFound(res)
+      })
+      .then(() => {
+        Message.create({
+          message,
+          senderId: req.body.from,
+          receiverId: req.body.to,
+          message_status: 'sent',
+        })
+          .then(message => responses.creationSuccess(res, message))
+          .catch(error => res.status(400).send(error))
+      })
+  } else {
+    responses.wrongInput(res, 'Message data')
   }
 }
 
@@ -96,7 +103,7 @@ export const getAllSentMessages = ({ params: { phoneNumber } }, res) => {
   if (phoneNumber) {
     Message.findAll({
       where: {
-        sender: phoneNumber,
+        senderId: phoneNumber,
       },
     })
       .then(message => {
@@ -107,8 +114,6 @@ export const getAllSentMessages = ({ params: { phoneNumber } }, res) => {
       .catch(err => {
         responses.serverError(res, err)
       })
-  } else {
-    responses.wrongInput(res, 'Phone Number')
   }
 }
 
@@ -116,17 +121,13 @@ export const getAllReceivedtMessages = ({ params: { phoneNumber } }, res) => {
   if (phoneNumber) {
     Message.findAll({
       where: {
-        receiver: phoneNumber,
+        receiverId: phoneNumber,
       },
+    }).then(message => {
+      message
+        ? responses.getSuccess(res, message)
+        : responses.contactNotFound(res, phoneNumber)
     })
-      .then(message => {
-        message
-          ? responses.getSuccess(res, message)
-          : responses.contactNotFound(res, phoneNumber)
-      })
-      .catch(err => {
-        responses.serverError(res, err)
-      })
   } else {
     responses.wrongInput(res, 'Phone Number')
   }
