@@ -3,78 +3,163 @@ HOST: http://polls.apiblueprint.org/
 
 # SMS-Management
 
-Polls is a simple API allowing consumers to view polls and vote in them.
+SMS-api is an sms management system that enables users send an sms from to each other.
 
-## Questions Collection [/questions]
+## Add Contact [/api/contact/]
 
-### List All Questions [GET]
-
-+ Response 200 (application/json)
-
-        [
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
-                    }
-                ]
-            }
-        ]
-
-### Create a New Question [POST]
-
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
+### Add a Contact [POST]
 
 + Request (application/json)
 
         {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
-            ]
+        "firstName": "Felistas",
+        "lastName": "Waceera",
+        "phoneNumber": "0700000000"
         }
 
 + Response 201 (application/json)
 
-    + Headers
+        {
+            "data": {
+            "id": 2,
+            "firstName": "Felistas",
+            "lastName": "Waceera",
+            "phoneNumber": "0700000000",
+            "updatedAt": "2019-03-27T14:28:07.118Z",
+            "createdAt": "2019-03-27T14:28:07.118Z"
+            },
+            "message": "successfully created"
+        }
+        
+## Delete Contact [/api/contact/{phoneNumber}]
 
-            Location: /questions/2
+### Delete a Contact [DELETE]
 
-    + Body
++ Parameters
+    + phoneNumber(string) - the phone number to delete
+        
++ Response 200 (application/json)
 
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
-                    }
-                ]
-            }
+        {
+             "message": "0700000001 has been deleted"
+        }
+
+## Update Contact [/api/contact/{phoneNumber}]
+
+### Update a Contact [PUT]
+
++ Parameters
+    + phoneNumber(string) - the phone number to delete
+        
+
+
++ Request (application/json)
+
+        {
+        "firstName": "Daisy",
+        "lastName": "Waceera",
+        "phoneNumber": "0700000000"
+        }
+
++ Response 200 (application/json)
+
+        {
+        "data": "0700000000",
+        "message": "successfully updated"
+        }
+
+        
+## Add Message [/api/message]
+### Add a Message [POST]
+    
++ Request (application/json)
+
+        {
+        "from": "0700000001",
+        "to": "0700000000",
+        "message": "Are you coming to work"
+        }
+
+        
++ Response 200 (application/json)
+
+        {
+          "data": {
+            "id": 1,
+            "message": "Are you coming to work",
+            "message_status": "sent",
+            "receiver": "0700000000",
+            "sender": "0700000001",
+            "updatedAt": "2019-03-27T14:48:23.226Z",
+            "createdAt": "2019-03-27T14:48:23.226Z"
+           },
+          "message": "successfully created"
+        }
+
+## Message Collection [/api/message/{id}]
+
+### Delete a Message [DELETE]
+
++ Parameters
+    + id(number) - the id of the message to delete
+        
++ Response 200 (application/json)
+
+        {
+         "message": "Are you coming to work has been deleted"
+        }
+        
+## Get Message [/api/message/{id}]
+
+### Get a Message [GET]
+
++ Parameters
+    + id(number) - the id of the message to delete
+        
++ Response 200 (application/json)
+
+        {
+          "data": {
+        "id": 2,
+        "message": "Are you coming to work",
+        "message_status": "sent",
+        "createdAt": "2019-03-27T14:55:14.987Z",
+        "updatedAt": "2019-03-27T14:55:14.987Z",
+        "sender": "0700000001",
+        "receiver": "0700000000"
+    },
+    "message": "succesfully fetched data"
+}
+
+## Get Sent Messages [/api/message/sent/{phoneNumber}]
+
+### Get Sent Messages [GET]
+
++ Parameters
+    + phoneNumber(string) - the phone number to get messages sent
+    
++ Response 200 (application/json)
+
+{
+    "data": [
+        {
+            "id": 2,
+            "message": "Are you coming to work",
+            "message_status": "sent",
+            "createdAt": "2019-03-27T14:55:14.987Z",
+            "updatedAt": "2019-03-27T14:55:14.987Z",
+            "sender": "0700000001",
+            "receiver": "0700000000"
+        },
+        {
+            "id": 3,
+            "message": "A second message",
+            "message_status": "sent",
+            "createdAt": "2019-03-27T15:03:40.408Z",
+            "updatedAt": "2019-03-27T15:03:40.408Z",
+            "sender": "0700000001",
+            "receiver": "0700000000"
+        }
+    ],
+    "message": "succesfully fetched data"
+}
