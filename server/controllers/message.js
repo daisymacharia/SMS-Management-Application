@@ -114,8 +114,6 @@ export const getAllSentMessages = ({ params: { phoneNumber } }, res) => {
       .catch(err => {
         responses.serverError(res, err)
       })
-  } else {
-    responses.wrongInput(res, 'Phone Number')
   }
 }
 
@@ -125,15 +123,11 @@ export const getAllReceivedtMessages = ({ params: { phoneNumber } }, res) => {
       where: {
         receiverId: phoneNumber,
       },
+    }).then(message => {
+      message
+        ? responses.getSuccess(res, message)
+        : responses.contactNotFound(res, phoneNumber)
     })
-      .then(message => {
-        message
-          ? responses.getSuccess(res, message)
-          : responses.contactNotFound(res, phoneNumber)
-      })
-      .catch(err => {
-        responses.serverError(res, err)
-      })
   } else {
     responses.wrongInput(res, 'Phone Number')
   }
